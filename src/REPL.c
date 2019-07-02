@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*Author  :  Akshay Terode
+ *Modules : REPL,
+ *          SQL Compiler 
+ *          Virtual Machine
+ *
+ *
+ *
+ *
+ */
+
 
 typedef struct{
     char* buffer;
@@ -37,6 +47,11 @@ void print_prompt() {
 }
 
 void read_input(InputBuffer* input_buffer){
+    /* This functions purpose is to read the input from the REPL terminal and pass is to the SQL Compiler,
+     * the important thing to notice here is that no syntax checking would be done here, the checking of the syntax would be done in the
+     * SQL Virutal Machine. This was done to balance the load and avoiding failure of the Compiler.
+     *
+     */
     ssize_t bytes_read = getline(&(input_buffer->buffer),&(input_buffer -> buffer_length),stdin);
     if (bytes_read <=0){
         printf("Error reading input \n");
@@ -49,6 +64,10 @@ void read_input(InputBuffer* input_buffer){
 }
 
 void close_input_buffer(InputBuffer* input_buffer){
+    /* Objective of this function is to clear the memory reserved for the buffer.
+     * 
+     *
+     */
     free(input_buffer -> buffer);
     free(input_buffer);
 }
@@ -78,18 +97,29 @@ PrepareResult prepare_statement(InputBuffer* input_buffer, Statement* statement)
 
 
 void execute_statement(Statement* statement) {
-  switch (statement->type) {
-    case (STATEMENT_INSERT):
-      printf("This is where we would do an insert.\n");
-      break;
-    case (STATEMENT_SELECT):
-      printf("This is where we would do a select.\n");
-      break;
-  }
+    /* Helper function for Identifing the syntax execution.
+     * This function is would be more helpful while writing test cases and debugging the code.
+     * 
+     *
+     */
+    switch (statement->type) {
+        case (STATEMENT_INSERT):
+            printf("This is where we would do an insert.\n");
+            break;
+        case (STATEMENT_SELECT):
+            printf("This is where we would do a select.\n");
+            break;
+    }
 }
 
 
 int main(int argc, char* argv[]){
+    /* This is the main driver function.
+     *
+     *
+     *
+     * 
+     */
     InputBuffer* input_buffer = new_input_buffer();
     while(true){
         print_prompt();
